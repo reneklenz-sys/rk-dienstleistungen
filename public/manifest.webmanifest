@@ -1,0 +1,19 @@
+{
+  "name": "Amos Digital",
+  "short_name": "Amos",
+  "description": "Digitale Auftritte, KI-Content und Webapps für kleine Unternehmen.",
+  "start_url": "/de",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#09090d",
+  "theme_color": "#7c5cff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
