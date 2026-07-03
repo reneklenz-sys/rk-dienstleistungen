@@ -1,10 +1,35 @@
 import { groq } from "next-sanity";
 
+const projectFields = groq`
+  title,
+  "slug": slug.current,
+  shortDescription,
+  description,
+  category,
+  clientType,
+  year,
+  status,
+  technologies,
+  services,
+  liveLink,
+  githubLink,
+  previewLink,
+  caseStudyText,
+  outcome,
+  featured,
+  order,
+  screenshots[]{
+    alt,
+    image
+  }
+`;
+
 export const homepageQuery = groq`
   *[_type == "homepage"][0]{
     seo,
     "designPreset": designPreset->{
       "surfaceStyle": surfaceStyle,
+      "colorPreset": colorPreset,
       "accent": accentColor,
       "accentSoft": accentSoftColor,
       "radius": radiusPreset,
@@ -25,23 +50,7 @@ export const homepageQuery = groq`
       visible
     },
     "projects": coalesce(featuredProjects[]->, *[_type == "project" && featured == true] | order(order asc)){
-      title,
-      "slug": slug.current,
-      shortDescription,
-      description,
-      category,
-      clientType,
-      year,
-      status,
-      technologies,
-      services,
-      liveLink,
-      githubLink,
-      previewLink,
-      caseStudyText,
-      outcome,
-      featured,
-      order
+      ${projectFields}
     },
     "caseStudies": coalesce(featuredCaseStudies[]->, *[_type == "caseStudy"] | order(order asc)[0...3]){
       title,
@@ -62,6 +71,7 @@ export const homepageQuery = groq`
       type,
       status,
       highlights,
+      externalLink,
       order
     },
     "process": *[_type == "processStep" && visible != false] | order(order asc){
@@ -74,23 +84,7 @@ export const homepageQuery = groq`
 
 export const projectBySlugQuery = groq`
   *[_type == "project" && slug.current == $slug][0]{
-    title,
-    "slug": slug.current,
-    shortDescription,
-    description,
-    category,
-    clientType,
-    year,
-    status,
-    technologies,
-    services,
-    liveLink,
-    githubLink,
-    previewLink,
-    caseStudyText,
-    outcome,
-    featured,
-    order,
+    ${projectFields},
     seo
   }
 `;

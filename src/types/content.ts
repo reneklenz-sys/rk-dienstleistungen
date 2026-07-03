@@ -20,6 +20,7 @@ export type SectionKey =
 
 export type DesignPreset = {
   surfaceStyle: "clear" | "frosted" | "premiumGlass";
+  colorPreset?: "anthraciteCyan" | "amethyst" | "graphite" | "champagne" | "ocean";
   accent: string;
   accentSoft: string;
   radius: "soft" | "round" | "pill";
@@ -44,6 +45,11 @@ export type Service = {
   visible: boolean;
 };
 
+export type ProjectScreenshot = {
+  src: string;
+  alt: LocalizedString;
+};
+
 export type ProjectStatus = "concept" | "inProgress" | "live" | "completed";
 
 export type Project = {
@@ -64,6 +70,7 @@ export type Project = {
   outcome: LocalizedString;
   featured: boolean;
   order: number;
+  screenshots?: ProjectScreenshot[];
   seo?: SeoData;
 };
 
@@ -88,6 +95,7 @@ export type LabProduct = {
   type: LocalizedString;
   status: LocalizedString;
   highlights: LocalizedStringArray;
+  externalLink?: string;
   order: number;
 };
 

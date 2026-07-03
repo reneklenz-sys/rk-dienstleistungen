@@ -7,8 +7,8 @@ const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "replace-with-pro
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
 
 export default defineConfig({
-  name: "amosPremiumWebsite",
-  title: "Amos Premium Website",
+  name: "rkDienstleistungen",
+  title: "RK Dienstleistungen",
   projectId,
   dataset,
   basePath: "/studio",

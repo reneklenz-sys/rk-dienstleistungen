@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { Footer } from "@/components/layout/Footer";
 import { Navigation } from "@/components/layout/Navigation";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { PageSections } from "@/components/sections/PageSections";
@@ -37,6 +38,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: getText(data.seo.description, locale),
       locale: locale === "de" ? "de_DE" : "en_US",
       type: "website",
+      images: [
+        {
+          url: "/images/rene-klenz.png",
+          width: 1200,
+          height: 1500,
+          alt: locale === "de" ? "René Klenz — Digitale Dienstleistungen" : "René Klenz — digital services",
+        },
+      ],
     },
   };
 }
@@ -49,11 +58,12 @@ export default async function LocalePage({ params }: PageProps) {
 
   return (
     <div style={designStyle(data.designPreset)}>
-      <Navigation locale={rawLocale} defaultTheme={data.designPreset.defaultTheme} />
+      <Navigation locale={rawLocale} />
       <main>
         <HeroSection hero={data.hero} locale={rawLocale} />
         <PageSections data={data} locale={rawLocale} />
       </main>
+      <Footer locale={rawLocale} />
     </div>
   );
 }

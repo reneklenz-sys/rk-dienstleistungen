@@ -57,6 +57,33 @@ export const seo = defineType({
   ],
 });
 
+export const projectScreenshot = defineType({
+  name: "projectScreenshot",
+  title: "Screenshot",
+  type: "object",
+  fields: [
+    defineField({
+      name: "image",
+      title: "Bild",
+      type: "image",
+      options: { hotspot: true },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "alt",
+      title: "Alternativtext",
+      type: "localizedString",
+      description: "Kurz beschreiben, was auf dem Screenshot zu sehen ist.",
+    }),
+  ],
+  preview: {
+    select: { title: "alt.de", media: "image" },
+    prepare({ title, media }) {
+      return { title: title || "Screenshot", media };
+    },
+  },
+});
+
 export const sectionSetting = defineType({
   name: "sectionSetting",
   title: "Abschnitt",

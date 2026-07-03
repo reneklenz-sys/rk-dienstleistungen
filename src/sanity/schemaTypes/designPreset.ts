@@ -10,15 +10,17 @@ export const designPreset = defineType({
       name: "colorPreset",
       title: "Farb-Preset",
       type: "string",
-      initialValue: "amethyst",
+      initialValue: "anthraciteCyan",
       options: {
         list: [
+          { title: "Anthrazit & Cyan", value: "anthraciteCyan" },
           { title: "Amethyst", value: "amethyst" },
           { title: "Graphit", value: "graphite" },
           { title: "Champagner", value: "champagne" },
           { title: "Ozean", value: "ocean" },
         ],
       },
+      description: "Akzentfarbe für Buttons, Tags, Aurora und Logo — im Studio live vergleichen.",
     }),
     defineField({
       name: "fontPreset",
@@ -75,13 +77,9 @@ export const designPreset = defineType({
       name: "darkModeDefault",
       title: "Darkmode-Standard",
       type: "string",
-      initialValue: "system",
+      initialValue: "dark",
       options: {
-        list: [
-          { title: "System", value: "system" },
-          { title: "Hell", value: "light" },
-          { title: "Dunkel", value: "dark" },
-        ],
+        list: [{ title: "Dunkel", value: "dark" }],
       },
     }),
     defineField({ name: "accentColor", title: "Akzentfarbe", type: "string", initialValue: "#7c5cff" }),

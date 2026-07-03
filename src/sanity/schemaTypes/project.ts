@@ -48,9 +48,10 @@ export const project = defineType({
     defineField({ name: "services", title: "Leistungen", type: "localizedStringList" }),
     defineField({
       name: "screenshots",
-      title: "Screenshots / Bilder",
+      title: "Screenshots / Referenzbilder",
+      description: "Für die Startseiten-Showcase-Karussell und die Projekt-Detailseite. Reihenfolge per Drag & Drop.",
       type: "array",
-      of: [{ type: "image", options: { hotspot: true } }],
+      of: [{ type: "projectScreenshot" }],
     }),
     defineField({ name: "liveLink", title: "Live-Link", type: "url" }),
     defineField({ name: "githubLink", title: "GitHub-Link", type: "url" }),

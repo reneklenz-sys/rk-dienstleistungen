@@ -1,0 +1,13 @@
+{
+  "name": "Anthrazit & Cyan",
+  "primaryDark": "#2B3442",
+  "primaryMid": "#4A5568",
+  "accentLight": "#7DD3FC",
+  "accentMid": "#38BDF8",
+  "onMark": "#F8FAFC",
+  "text": "#111827",
+  "textMuted": "#6B7280",
+  "textOnDark": "#F4F7FB",
+  "textMutedOnDark": "#9FB0C4",
+  "faviconBg": "#1F2937"
+}

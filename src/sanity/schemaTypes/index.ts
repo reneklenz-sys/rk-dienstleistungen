@@ -2,7 +2,7 @@ import { caseStudy } from "./caseStudy";
 import { designPreset } from "./designPreset";
 import { homepage } from "./homepage";
 import { labProduct } from "./labProduct";
-import { localizedString, localizedStringList, localizedText, sectionSetting, seo } from "./objects";
+import { localizedString, localizedStringList, localizedText, projectScreenshot, sectionSetting, seo } from "./objects";
 import { processStep } from "./processStep";
 import { project } from "./project";
 import { service } from "./service";
@@ -12,6 +12,7 @@ export const schemaTypes = [
   localizedString,
   localizedText,
   localizedStringList,
+  projectScreenshot,
   seo,
   sectionSetting,
   siteSettings,

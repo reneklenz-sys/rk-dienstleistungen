@@ -1,0 +1,22 @@
+[
+  {
+    "src": "/references/hausarztpraxis-klaetschke/01-hero.png",
+    "name": "01-hero"
+  },
+  {
+    "src": "/references/hausarztpraxis-klaetschke/02-leistungen.png",
+    "name": "02-leistungen"
+  },
+  {
+    "src": "/references/hausarztpraxis-klaetschke/03-team.png",
+    "name": "03-team"
+  },
+  {
+    "src": "/references/hausarztpraxis-klaetschke/04-kontakt.png",
+    "name": "04-kontakt"
+  },
+  {
+    "src": "/references/hausarztpraxis-klaetschke/05-mobile.png",
+    "name": "05-mobile"
+  }
+]

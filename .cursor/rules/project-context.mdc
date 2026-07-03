@@ -1,0 +1,44 @@
+---
+description: Projektkontext RK Digitale Dienstleistungen — Portfolio René Klenz
+alwaysApply: true
+---
+
+# RK Digitale Dienstleistungen (Portfolio René Klenz)
+
+- **Pfad:** `C:\Users\aMo\Documents\RK Digitale Dienstleistungen`
+- **GitHub:** https://github.com/reneklenz-sys/rk-dienstleistungen
+- **Stack:** Next.js 16, React 19, Tailwind v4, Sanity CMS (optional), PWA, Dark-only
+- **Dev:** `npm run dev` → http://localhost:3000/de | Studio: http://localhost:3000/studio
+
+## User-Profil
+René Klenz — kein Programmierer, hoher Design-Anspruch. Deutsch. Apple/Glass-Look, ehrliches Feedback, keine Agentur-Floskeln.
+
+## Erledigt (Stand Juli 2026)
+- Portfolio: Hero, Leistungen, Referenzen-Karussell (Autoplay), Labs, Ablauf, Über mich, Kontakt, Footer mit Fade
+- Referenzen: Hausarztpraxis Klätschke (live), nextCrush (eigenes Produkt), DeepaLunX YouTube in Labs
+- Ton: Solo, direkt, kundenorientiert — kein Agentur-Overhead, Labs als Beweis (nicht Hauptstory)
+- Dark-only, keine Sprach-/Theme-Toggles in Nav
+- Startseiten-Reihenfolge: Referenzen → Leistungen (3) → Labs — Ablauf ausgeblendet
+- Akzent-Presets im CMS: anthraciteCyan, amethyst, graphite, champagne, ocean
+- Referenz-Screenshots im CMS unter Projekt → Screenshots (Alt DE/EN)
+- Case Studies: Hausarztpraxis Klätschke + nextCrush (eigene Seiten, Startseiten-Sektion standardmäßig ausgeblendet)
+- Rechtliches: Impressum, Datenschutz, Cookies, Barrierefreiheit, Sitemap (Platzhalter Adresse/USt prüfen)
+- PWA, Logo RK, Druck-Set-Scripts in `/scripts`
+- CMS Studio nicht mehr im öffentlichen Footer (weiter unter `/studio` erreichbar)
+
+## Sanity Studio
+Ohne `.env.local` zeigt `/studio` Setup-Anleitung. Einrichtung:
+1. `npx sanity login`
+2. `npm run sanity:create-project`
+3. Project ID in `.env.local` (siehe `.env.example`)
+4. Dev-Server neu starten
+
+## Verwandte Projekte (Referenz, nicht dieses Repo)
+- Hausarztpraxis Klätschke: `hausarztpraxis-klatschke-new`
+- nextCrush: `C:\Users\aMo\Documents\NextCrush FINAL` (Port 8080 für Screenshots)
+- Glass-Template: `website-template-glass-cms`
+
+## Offen / Nächste Schritte
+- Sanity: `npx sanity login --provider github` → `npm run sanity:setup`
+- Impressum: Adresse + USt-IdNr. eintragen
+- Altes GitHub-Repo `amos-page` löschen (gh braucht `delete_repo` Scope)

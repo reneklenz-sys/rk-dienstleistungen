@@ -1,56 +1,114 @@
 "use client";
 
+import { Monitor, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
-type ThemeChoice = "system" | "light" | "dark";
+import {
+  applyThemeMode,
+  getStoredThemeMode,
+  storeThemeMode,
+  themeModeOptions,
+  type ThemeModeSetting,
+} from "@/lib/themeMode";
+import {
+  compactNavControlClass,
+  controlActiveClass,
+  controlInactiveClass,
+  controlItemClass,
+  controlShellClass,
+} from "@/lib/navControls";
+import { cn } from "@/lib/utils";
 
-const labels: Record<ThemeChoice, string> = {
+const themeModeLabels: Record<ThemeModeSetting, string> = {
   system: "System",
   light: "Hell",
   dark: "Dunkel",
 };
 
-function applyTheme(theme: ThemeChoice) {
-  const root = document.documentElement;
-  root.dataset.theme = theme;
+const themeModeIcons = {
+  system: Monitor,
+  light: Sun,
+  dark: Moon,
+} as const;
 
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  root.classList.toggle("dark", theme === "dark" || (theme === "system" && prefersDark));
-}
-
-export function ThemeToggle({ defaultTheme = "system" }: { defaultTheme?: ThemeChoice }) {
-  const [theme, setTheme] = useState<ThemeChoice>(() => {
-    if (typeof window === "undefined") return defaultTheme;
-    return (window.localStorage.getItem("theme") as ThemeChoice | null) || defaultTheme;
-  });
+export function ThemeToggle({ defaultTheme = "system" }: { defaultTheme?: ThemeModeSetting }) {
+  const [mode, setMode] = useState<ThemeModeSetting>(defaultTheme);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    applyTheme(theme);
+    const initial = getStoredThemeMode();
+    setMode(initial);
+    applyThemeMode(initial);
+    setMounted(true);
 
     const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const listener = () => {
-      const saved = window.localStorage.getItem("theme") as ThemeChoice | null;
-      applyTheme(saved || theme);
-    };
+    const listener = () => applyThemeMode(getStoredThemeMode());
     media.addEventListener("change", listener);
     return () => media.removeEventListener("change", listener);
-  }, [theme]);
+  }, []);
+
+  const CurrentIcon = themeModeIcons[mode];
+  const nextMode = themeModeOptions[(themeModeOptions.indexOf(mode) + 1) % themeModeOptions.length];
 
   function cycleTheme() {
-    const next: ThemeChoice = theme === "system" ? "light" : theme === "light" ? "dark" : "system";
-    setTheme(next);
-    window.localStorage.setItem("theme", next);
-    applyTheme(next);
+    storeThemeMode(nextMode);
+    setMode(nextMode);
+    applyThemeMode(nextMode);
   }
 
   return (
     <button
-      aria-label="Theme wechseln"
-      className="glass-control min-h-10 rounded-full px-4 text-xs font-semibold text-foreground transition hover:-translate-y-0.5"
       type="button"
+      aria-label={
+        mounted
+          ? `Darstellung: ${themeModeLabels[mode]}. Wechsel zu ${themeModeLabels[nextMode]}`
+          : "Darstellung wechseln"
+      }
+      title={mounted ? `Darstellung: ${themeModeLabels[mode]}` : undefined}
+      className={cn(compactNavControlClass, controlActiveClass)}
       onClick={cycleTheme}
+      suppressHydrationWarning
     >
-      {labels[theme]}
+      <CurrentIcon size={15} aria-hidden />
     </button>
+  );
+}
+
+export function ThemeToggleMobile({ defaultTheme = "system" }: { defaultTheme?: ThemeModeSetting }) {
+  const [mode, setMode] = useState<ThemeModeSetting>(defaultTheme);
+
+  useEffect(() => {
+    setMode(getStoredThemeMode());
+  }, []);
+
+  function selectMode(nextMode: ThemeModeSetting) {
+    storeThemeMode(nextMode);
+    setMode(nextMode);
+    applyThemeMode(nextMode);
+  }
+
+  return (
+    <div className={cn(controlShellClass, "grid w-full grid-cols-3")}>
+      {themeModeOptions.map((option) => {
+        const Icon = themeModeIcons[option];
+        return (
+          <button
+            key={option}
+            type="button"
+            onClick={() => selectMode(option)}
+            aria-label={`Darstellung: ${themeModeLabels[option]}`}
+            aria-pressed={mode === option}
+            className={cn(
+              controlItemClass,
+              "gap-2 py-3 text-sm normal-case",
+              mode === option ? controlActiveClass : controlInactiveClass,
+            )}
+          >
+            <Icon size={16} aria-hidden />
+            {themeModeLabels[option]}
+          </button>
+        );
+      })}
+    </div>
   );
 }

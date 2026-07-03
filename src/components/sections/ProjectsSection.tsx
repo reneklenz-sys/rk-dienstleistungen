@@ -3,69 +3,129 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Reveal } from "@/components/ui/Reveal";
-import { SectionHeader } from "@/components/ui/SectionHeader";
+import { SectionLabel } from "@/components/ui/SectionLabel";
+import { Tag } from "@/components/ui/Tag";
 import { getText, localizedPath } from "@/lib/i18n";
-import type { Locale, Project } from "@/types/content";
+import { cn } from "@/lib/utils";
+import type { CaseStudy, Locale, Project } from "@/types/content";
+
+import { ReferenceShowcase } from "./ReferenceShowcase";
+
+/** Curated hero rotation on the homepage — not every project belongs here. */
+const HOMEPAGE_SHOWCASE_MAX = 8;
+/** Compact cards below the showcase — only real references, never lone concept cards. */
+const HOMEPAGE_COMPACT_MAX = 4;
+const HOMEPAGE_COMPACT_MIN = 2;
 
 const statusLabels = {
-  de: {
-    concept: "Konzept",
-    inProgress: "In Arbeit",
-    live: "Live",
-    completed: "Abgeschlossen",
-  },
-  en: {
-    concept: "Concept",
-    inProgress: "In progress",
-    live: "Live",
-    completed: "Completed",
-  },
+  de: { concept: "Konzept", inProgress: "In Arbeit", live: "Live", completed: "Abgeschlossen" },
+  en: { concept: "Concept", inProgress: "In progress", live: "Live", completed: "Completed" },
 } as const;
 
-export function ProjectsSection({ projects, locale }: { projects: Project[]; locale: Locale }) {
+function CompactProjectCard({ project, locale }: { project: Project; locale: Locale }) {
   return (
-    <section id="referenzen" className="py-16 sm:py-24">
+    <Link href={localizedPath(locale, `/projects/${project.slug}`)} className="group block h-full">
+      <GlassCard as="article" className="flex h-full flex-col overflow-hidden p-0">
+        <div className="h-1.5 bg-gradient-to-r from-[var(--accent-bright)] via-[var(--accent-light)] to-[var(--accent-soft)]" />
+        <div className="flex flex-1 flex-col p-6 sm:p-7">
+          <div className="mb-7 flex flex-wrap items-center gap-2">
+            <Tag variant="brand">{getText(project.category, locale)}</Tag>
+            <Tag variant={project.status === "live" ? "success" : "neutral"}>
+              {statusLabels[locale][project.status]}
+            </Tag>
+          </div>
+          <h3 className="text-2xl font-semibold tracking-tight text-foreground">{project.title}</h3>
+          <p className="mt-4 flex-1 text-pretty leading-7 text-muted">{getText(project.shortDescription, locale)}</p>
+          <p className="mt-8 text-sm font-semibold text-accent-bright transition group-hover:translate-x-1">
+            {locale === "de" ? "Projekt ansehen →" : "View project →"}
+          </p>
+        </div>
+      </GlassCard>
+    </Link>
+  );
+}
+
+export function ProjectsSection({
+  projects,
+  caseStudies,
+  locale,
+}: {
+  projects: Project[];
+  caseStudies: CaseStudy[];
+  locale: Locale;
+}) {
+  const sorted = [...projects].sort((a, b) => a.order - b.order);
+  const featuredWithScreenshots = sorted.filter((project) => project.featured && project.screenshots?.length);
+  const showcase = featuredWithScreenshots.slice(0, HOMEPAGE_SHOWCASE_MAX);
+  const showcaseSlugs = new Set(showcase.map((project) => project.slug));
+  const compactCandidates = sorted.filter(
+    (project) => !showcaseSlugs.has(project.slug) && project.status !== "concept",
+  );
+  const compact =
+    compactCandidates.length >= HOMEPAGE_COMPACT_MIN ? compactCandidates.slice(0, HOMEPAGE_COMPACT_MAX) : [];
+  const hiddenCount = sorted.length - showcase.length - compact.length;
+  const showArchiveCta = hiddenCount >= 2;
+
+  return (
+    <section id="referenzen" className="section-shell">
       <Container>
-        <SectionHeader
-          eyebrow={locale === "de" ? "Featured Projects" : "Featured work"}
-          title={locale === "de" ? "Proof of Work statt leere Versprechen." : "Proof of work instead of empty claims."}
-          lead={locale === "de" ? "Referenzen, eigene Konzepte und digitale Produkte zeigen, wie Design, CMS und praktische Nutzbarkeit zusammenkommen." : "References, own concepts and digital products show how design, CMS and practical usability come together."}
-        />
-        <div className="mt-10 grid gap-5 lg:grid-cols-2">
-          {projects
-            .sort((a, b) => a.order - b.order)
-            .map((project, index) => (
-              <Reveal key={project.slug} delay={index * 80}>
-                <Link href={localizedPath(locale, `/projects/${project.slug}`)}>
-                  <GlassCard as="article" className="group h-full overflow-hidden p-6 sm:p-7">
-                    <div className="mb-7 flex flex-wrap items-center gap-2">
-                      <span className="rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-semibold text-white">
-                        {getText(project.category, locale)}
-                      </span>
-                      <span className="rounded-full bg-foreground/5 px-3 py-1 text-xs font-semibold text-muted dark:bg-white/10">
-                        {statusLabels[locale][project.status]}
-                      </span>
-                      <span className="rounded-full bg-foreground/5 px-3 py-1 text-xs font-semibold text-muted dark:bg-white/10">
-                        {project.year}
-                      </span>
-                    </div>
-                    <h3 className="text-3xl font-semibold tracking-tight text-foreground">{project.title}</h3>
-                    <p className="mt-4 text-pretty leading-7 text-muted">{getText(project.shortDescription, locale)}</p>
-                    <div className="mt-8 flex flex-wrap gap-2">
-                      {project.technologies.map((tech) => (
-                        <span key={tech} className="rounded-full border border-foreground/10 px-3 py-1 text-xs font-medium text-muted dark:border-white/10">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <p className="mt-8 text-sm font-semibold text-accent transition group-hover:translate-x-1">
-                      {locale === "de" ? "Projekt ansehen" : "View project"}
-                    </p>
-                  </GlassCard>
-                </Link>
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-3xl">
+            <SectionLabel className="mb-3">{locale === "de" ? "Referenzen" : "Work"}</SectionLabel>
+            <h2 className="font-display text-balance text-4xl font-medium leading-[1.08] tracking-[-0.02em] text-foreground sm:text-5xl">
+              {locale === "de" ? "Referenzen, die für sich sprechen." : "Work that speaks for itself."}
+            </h2>
+            <p className="mt-5 text-pretty text-base leading-8 text-muted sm:text-lg">
+              {locale === "de"
+                ? "Echte Umsetzungen — von der Praxis-Website bis zum eigenen Produkt."
+                : "Real builds — from a medical practice website to an own product."}
+            </p>
+          </div>
+
+          {hiddenCount > 0 ? (
+            <Link
+              href={localizedPath(locale, "/projects")}
+              className="shrink-0 text-sm font-semibold text-accent-bright transition hover:text-foreground"
+            >
+              {locale === "de" ? "Alle Referenzen →" : "All work →"}
+            </Link>
+          ) : null}
+        </div>
+
+        {showcase.length ? (
+          <Reveal>
+            <ReferenceShowcase projects={showcase} caseStudies={caseStudies} locale={locale} />
+          </Reveal>
+        ) : null}
+
+        {compact.length ? (
+          <div
+            className={cn(
+              "grid auto-rows-fr gap-5",
+              showcase.length ? "mt-10" : "mt-12",
+              compact.length > 1 ? "lg:grid-cols-2" : "max-w-2xl",
+            )}
+          >
+            {compact.map((project, index) => (
+              <Reveal key={project.slug} delay={index * 80} className="h-full">
+                <CompactProjectCard project={project} locale={locale} />
               </Reveal>
             ))}
-        </div>
+          </div>
+        ) : null}
+
+        {showArchiveCta ? (
+          <div className={cn("flex justify-center", showcase.length ? "mt-10" : "mt-12")}>
+            <Link
+              href={localizedPath(locale, "/projects")}
+              className="primary-glass-button inline-flex min-h-12 items-center justify-center rounded-full px-7 text-sm font-semibold transition hover:-translate-y-0.5"
+            >
+              {locale === "de"
+                ? `Alle ${sorted.length} Referenzen ansehen`
+                : `View all ${sorted.length} projects`}
+            </Link>
+          </div>
+        ) : null}
       </Container>
     </section>
   );

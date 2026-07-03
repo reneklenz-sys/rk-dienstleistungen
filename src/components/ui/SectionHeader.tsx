@@ -11,9 +11,15 @@ export function SectionHeader({
 }) {
   return (
     <div className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}>
-      {eyebrow ? <p className="mb-3 text-sm font-semibold uppercase tracking-[0.28em] text-accent">{eyebrow}</p> : null}
-      <h2 className="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-5xl">{title}</h2>
-      {lead ? <p className="mt-5 text-pretty text-base leading-8 text-muted sm:text-lg">{lead}</p> : null}
+      {eyebrow ? (
+        <div className={`eyebrow-line ${align === "center" ? "justify-center" : ""}`}>
+          <span className="eyebrow">{eyebrow}</span>
+        </div>
+      ) : null}
+      <h2 className="font-display text-balance text-4xl font-medium leading-[1.08] tracking-[-0.02em] text-foreground sm:text-5xl lg:text-[3.25rem]">
+        {title}
+      </h2>
+      {lead ? <p className="mt-5 text-pretty text-base leading-8 text-muted sm:text-[1.0625rem]">{lead}</p> : null}
     </div>
   );
 }

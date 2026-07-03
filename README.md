@@ -1,67 +1,43 @@
-# Amos Digital
+# RK Dienstleistungen
 
-Premium-Website/Webapp mit Next.js, Sanity Studio, zweisprachiger Inhaltsstruktur und PWA-Basis.
+Portfolio-Website von René Klenz — Next.js, Sanity CMS, Dark Mode, PWA.
 
 ## Start
 
 ```bash
+npm install
 npm run dev
 ```
 
-Frontend: `http://localhost:3000/de`  
-Sanity Studio: `http://localhost:3000/studio`
+- Website: [http://localhost:3000/de](http://localhost:3000/de)
+- CMS Studio: [http://localhost:3000/studio](http://localhost:3000/studio)
 
-## Sanity verbinden
+## Sanity Studio verbinden
 
-Die lokale CLI-Session muss einmal eingeloggt sein:
-
-```bash
-npx sanity login
-npm run sanity:create-project
-```
-
-Danach die ausgegebene Project ID in `.env.local` eintragen:
+Ohne `.env.local` zeigt `/studio` eine Setup-Anleitung. Die Website läuft parallel mit Fallback-Inhalten.
 
 ```bash
-NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id
-NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_SANITY_API_VERSION=2026-05-28
+npx sanity login --provider github
+npm run sanity:setup
 ```
 
-Ohne `.env.local` läuft die Website mit hochwertigem Fallback-Content weiter.
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+`npm run sanity:setup` legt das Sanity-Projekt an (falls nötig) und schreibt die Project ID automatisch in `.env.local`. Dev-Server neu starten, dann `/studio` öffnen.
 
-## Getting Started
+## Scripts
 
-First, run the development server:
+| Befehl | Zweck |
+|---|---|
+| `npm run dev` | Entwicklungsserver |
+| `npm run build` | Production-Build |
+| `npm run sanity:setup` | Sanity-Projekt anlegen + `.env.local` schreiben |
+| `npm run sanity:create-project` | Nur Sanity-Projekt anlegen |
+| `npm run sanity:deploy` | Studio bei Sanity hosten |
+| `npm run reference:capture-nextcrush` | Referenz-Screenshots für nextCrush |
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Akzent-Presets
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Im Studio unter **Design Preset → Farb-Preset**: Anthrazit & Cyan, Amethyst, Graphit, Champagner, Ozean.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Referenz-Screenshots
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Im Studio unter **Projekt / Referenz → Screenshots** — Bilder und Alt-Texte pflegen.

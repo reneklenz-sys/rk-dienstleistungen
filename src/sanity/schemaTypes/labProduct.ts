@@ -19,6 +19,12 @@ export const labProduct = defineType({
     defineField({ name: "status", title: "Status", type: "localizedString" }),
     defineField({ name: "highlights", title: "Highlights", type: "localizedStringList" }),
     defineField({
+      name: "externalLink",
+      title: "Externer Link",
+      type: "url",
+      description: "Optional — z. B. YouTube-Kanal oder Live-Produkt außerhalb der Website.",
+    }),
+    defineField({
       name: "images",
       title: "Bilder / Screenshots",
       type: "array",

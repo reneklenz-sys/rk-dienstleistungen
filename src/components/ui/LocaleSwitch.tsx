@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { compactNavControlClass, controlActiveClass } from "@/lib/navControls";
+import { cn } from "@/lib/utils";
 import type { Locale } from "@/types/content";
 
 export function LocaleSwitch({ locale, pathname = "" }: { locale: Locale; pathname?: string }) {
@@ -8,7 +10,12 @@ export function LocaleSwitch({ locale, pathname = "" }: { locale: Locale; pathna
   const cleanPath = pathname.replace(/^\/(de|en)/, "");
 
   return (
-    <Link className="glass-control min-h-10 rounded-full px-4 text-xs font-semibold text-foreground transition hover:-translate-y-0.5" href={`/${nextLocale}${cleanPath || ""}`}>
+    <Link
+      className={cn(compactNavControlClass, controlActiveClass)}
+      href={`/${nextLocale}${cleanPath || ""}`}
+      aria-label={locale === "de" ? "Sprache auf Englisch wechseln" : "Sprache auf Deutsch wechseln"}
+      title={locale === "de" ? "Deutsch" : "English"}
+    >
       {label}
     </Link>
   );

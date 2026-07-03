@@ -1,29 +1,63 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { PwaRegister } from "@/components/layout/PwaRegister";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://example.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: {
-    default: "Amos Digital",
-    template: "%s | Amos Digital",
+    default: "René Klenz — Websites & KI-Content",
+    template: "%s | René Klenz",
   },
-  description: "Digitale Auftritte, KI-Content und Webapps für kleine Unternehmen, Praxen, Studios und Gründer.",
+  description:
+    "Websites, Landingpages und KI-Content für Praxen, Studios und lokale Betriebe — direkt mit mir, ohne Agentur-Overhead.",
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "René Klenz — Digitale Dienstleistungen",
+    title: "René Klenz — Websites & KI-Content",
+    description:
+      "Websites, Landingpages und KI-Content für Praxen, Studios und lokale Betriebe — direkt mit mir, ohne Agentur-Overhead.",
+    images: [
+      {
+        url: "/images/rene-klenz.png",
+        width: 1200,
+        height: 1500,
+        alt: "René Klenz — Digitale Dienstleistungen",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "René Klenz — Websites & KI-Content",
+    description:
+      "Websites, Landingpages und KI-Content für Praxen, Studios und lokale Betriebe — direkt mit mir, ohne Agentur-Overhead.",
+    images: ["/images/rene-klenz.png"],
+  },
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   appleWebApp: {
     capable: true,
-    title: "Amos Digital",
+    title: "René Klenz",
     statusBarStyle: "black-translucent",
   },
 };
@@ -31,10 +65,9 @@ export const metadata: Metadata = {
 const themeScript = `
 (() => {
   try {
-    const stored = localStorage.getItem("theme") || "system";
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.documentElement.dataset.theme = stored;
-    document.documentElement.classList.toggle("dark", stored === "dark" || (stored === "system" && prefersDark));
+    document.documentElement.dataset.theme = "dark";
+    document.documentElement.dataset.themeMode = "dark";
+    document.documentElement.classList.add("dark");
   } catch (_) {}
 })();
 `;
@@ -48,9 +81,9 @@ export default function RootLayout({
     <html
       lang="de"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`dark ${dmSans.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col bg-background font-sans text-foreground">
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         {children}
         <PwaRegister />

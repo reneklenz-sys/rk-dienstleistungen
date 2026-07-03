@@ -13,6 +13,8 @@ export const homepage = defineType({
       title: "Abschnittsreihenfolge und Sichtbarkeit",
       type: "array",
       of: [{ type: "sectionSetting" }],
+      description:
+        "Reihenfolge per Drag & Drop. Case Studies sind standardmäßig ausgeblendet — Abschnitt hinzufügen und „Sichtbar“ aktivieren, wenn du sie wieder auf der Startseite zeigen willst.",
     }),
     defineField({
       name: "hero",
